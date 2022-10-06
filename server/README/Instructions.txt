@@ -1,0 +1,77 @@
+Tech used: mongodb/mongoose + nodejs/expressjs
+
+1. Run "npm install"
+
+2. Ensure localhost port 5000 is useable, otherwise configure port in index.js
+
+3. Run "nodemon start"
+
+4. Create a post (first requirement of the exercise: any user can start a new post/discussion)
+
+    in postman:
+
+        [POST] url: http://localhost:5000/posts
+
+        send the following JSON:
+        {
+            "username": "Professor A",
+            "content": "How is everyone doing?"
+        }
+
+        this will return the posted post object with an _id parameter
+        use this _id below
+
+5. Create a comment (second requirement of the exercise: any user can respond to a post/discussion or comment)
+
+    in postman:
+
+        [POST] url: http://localhost:5000/${_idOfPostCreatedAbove}/comments
+
+        send the following JSON:
+        {
+            "username": "Professor A",
+            "comment": "How is everyone doing?"
+        }
+
+        again this will return the posted comment object with an _id parameter
+        use this _id below
+
+6. Create a reply to a comment - comment on comment. (second requirement of the exercise: any user can respond to a post/discussion or comment)
+
+    in postman:
+
+        [POST] url: http://localhost:5000/${_idOfCommentCreatedAbove}/comments/new
+
+        send the following JSON:
+        {
+            "username": "Professor A",
+            "comment": "How is everyone doing?"
+        }
+
+7. Ensure localhost connection is killed (stop nodemon) 
+
+8. Run "npm test" from root folder
+
+    All 9 unit tests should pass.
+
+9. You can now create posts or comments as you wish
+
+    note: 
+        to create a post, you need to populate the "username" AND "content" attributes
+        to create a comment or a reply (comment on comment), you need to populate the "username" AND "comment" attributes
+        put/patch/delete are not included since they were not in the scope of the exercise.
+        please let me know if they are required.
+
+10. Retrieve all comments available in the database in a flat tree (third requirement)
+
+    e.g.
+        Use http://localhost:5000/posts 
+            or
+        Use http://localhost:5000/posts/${postId} 
+            or
+        any other GET route
+
+    [Important]: once data is fetched, they will populate the output folder (server/output/)
+        as either allDiscussions.json, post.json, comments.json or commentsOfcomment.json
+        depending on which path used. IF CONTENT OF THE FILE IS NOT BEAUTIFIED, PLEASE
+        SAVE FILE (i.e. cmd + s) TO VIEW THE FLAT TREE.  

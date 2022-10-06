@@ -1,0 +1,165 @@
+URL STRUCTURE:
+
+    general: 
+        ${parent_resource_in_plural}/${parent_id}/${child_resource_plural}
+    
+    only for posting comments on comments:
+        ${grandparent_resource_in_plural}/${parent_id}/${child_resource_plural}/new
+        aka
+        posts/:commentId/comments/new
+
+    only for fetching comments on comments:
+        ${grandparent_resource_in_plural}/${parent_id}/${child_resource_plural}/replies
+        aka 
+        posts/:commentId/comments/replies
+
+API RESPONSE SCHEMAS:
+
+    GET "posts/"
+        responses:
+        '200':
+            description: all posts/discussions and their nested comments
+            content: application/json
+            schema:
+                type: array
+
+    POST "posts/"
+        responses:
+            '201':
+                description: start a post/discussion and returns it as json
+                content: application/json
+                schema:
+                    type: object
+                    properties:
+                        _id:
+                            type: String
+                            description: unique id of the post/discussion
+                        username:
+                            type: String
+                            description: name of the person who posted
+                        content:
+                            type: String
+                            description: text content of the actual post
+                        comments:
+                            type: array
+                            description: array of id's of comments that gets populated
+                        createdAt
+                            type: String
+                            description: time when post/discussion was created
+                        updatedAt
+                            type: String
+                            description: time when post/discussion was updated
+                        __v:
+                            type: integer
+                            description: number of children(comments) a post has
+
+    GET "posts/:postId"
+        responses:
+        '200':
+            description: fetches a specific post with its nested comments
+            content: application/json
+            schema:
+                type: object
+                properties:
+                        _id:
+                            type: String
+                            description: unique id of the post/discussion
+                        username:
+                            type: String
+                            description: name of the person who posted
+                        content:
+                            type: String
+                            description: text content of the actual post
+                        comments:
+                            type: array
+                            description: array of id's of comments that gets populated
+                        createdAt
+                            type: String
+                            description: time when post/discussion was created
+                        updatedAt
+                            type: String
+                            description: time when post/discussion was updated
+                        __v:
+                            type: integer
+                            description: number of children(comments) a post has
+
+    GET "posts/:postId/comments"
+        responses:
+        '200':
+            description: all comments (and their nested comments) of a given post/discussion            
+            content: application/json
+            schema:
+                type: array
+
+    POST "posts/:postId/comments"
+        responses:
+        '201':
+            description: post a comment under a specific post
+            content: application/json
+            schema:
+                type: object
+                properties:
+                        _id:
+                            type: String
+                            description: unique id of the parent post
+                        username:
+                            type: String
+                            description: name of the person who posted parent post
+                        comment:
+                            type: String
+                            description: text content of the actual parent post
+                        comments:
+                            type: array
+                            description: array of id's of the comment's comments that gets populated. Contains just created comment.
+                        createdAt
+                            type: String
+                            description: time when parent post was created
+                        updatedAt
+                            type: String
+                            description: time when parent post was updated
+                        __v:
+                            type: integer
+                            description: number of children(comments) the parent post has
+
+
+    GET "posts/:commentId/comments/replies"
+        responses:
+        '200':
+            description: all comments (and their nested comments) of a given comment            
+            content: application/json
+            schema:
+                type: array
+
+    POST "posts/:commentId/comments/new"
+        responses:
+        '201':
+            description: post a comment under a specific comment
+            content: application/json
+            schema:
+                type: object
+                properties:
+                        _id:
+                            type: String
+                            description: unique id of the parent comment
+                        username:
+                            type: String
+                            description: name of the person who posted the parent comment
+                        comment:
+                            type: String
+                            description: text content of the actual parent comment
+                        comments:
+                            type: array
+                            description: array of id's of the comment's comments that gets populated. Contains just created comment.
+                        createdAt
+                            type: String
+                            description: time when parent comment was created
+                        updatedAt
+                            type: String
+                            description: time when parent comment was updated
+                        __v:
+                            type: integer
+                            description: number of children(comments) the parent comment has
+
+
+
+  
